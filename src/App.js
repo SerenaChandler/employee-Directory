@@ -1,16 +1,19 @@
-import React from "react";
-import './App.css';
-import Searchbar from "./components/Searchbar"
+import React, { Component } from "react";
+import Searchbar from "./components/Searchbar";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <Searchbar>
+class App extends Component {
+  state = {
+    employeeName: "",
+  };
 
-     
-      </Searchbar>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Searchbar></Searchbar>
+      </div>
+    );
+  }
 }
 
 export default App;

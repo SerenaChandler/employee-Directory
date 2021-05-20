@@ -1,8 +1,15 @@
 import React from "react";
+import Form from 'react-bootstrap/Form'
 
 function Searchbar() {
   return( 
-    <input placeholder="Enter employee name" />
+    <Form>
+ 
+   
+    <Form.Control type="text" placeholder="Employee name" />
+    
+   
+  </Form>
 
   )
 }
