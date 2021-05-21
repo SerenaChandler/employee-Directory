@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Searchbar from "./components/Searchbar";
-import Employee from "./components/Employee"
+import Employee from "./components/Employee";
 import API from "./utils/API";
 import "./App.css";
 
@@ -8,7 +8,14 @@ class App extends Component {
   state = {
     employeeName: "",
     results: [],
-    filteredResults: []
+    filteredResults: [],
+    sortToggle: true,
+    sorted: {
+      name: true,
+    },
+    search: {
+      name: "",
+    },
   };
 
   componentDidMount() {
@@ -19,7 +26,10 @@ class App extends Component {
     API.getRandomPerson()
       .then((res) => {
         console.log(res);
-        this.setState({ results: res.data.results });
+        this.setState({
+          results: res.data.results,
+          filteredResults: res.data.results,
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -29,21 +39,18 @@ class App extends Component {
     console.log(value);
     this.setState({
       [name]: value,
-      });
-      this.filterEmployees(value.toLowerCase().trim());
-      ;
+    });
+    this.filterEmployees(value.toLowerCase().trim());
   };
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-
   };
 
-
   SortEmployees = () => {
-    this.state.results.sort((a, b) => (a.name > b.name) ? 1 : -1)
-    console.log(this.state.results)
-  }
+    this.state.results.sort((a, b) => (a.name.last > b.name.last ? 1 : -1));
+    console.log(this.state.results);
+  };
 
   filterEmployees = (input) => {
     if (input) {
@@ -55,7 +62,6 @@ class App extends Component {
               .concat(" ", employee.name.last.toLowerCase())
               .includes(input) ||
             employee.cell.includes(input) ||
-          
             employee.email.includes(input) ||
             employee.dob.date.includes(input)
           );
@@ -66,7 +72,6 @@ class App extends Component {
     }
   };
 
-
   render() {
     return (
       <div className="App">
@@ -75,9 +80,10 @@ class App extends Component {
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
         />
-        <Employee 
-        results = {this.state.results}
-        SortEmployees = {this.SortEmployees}
+        <Employee
+          filteredResults={this.state.filteredResults}
+          results={this.state.results}
+          SortEmployees={this.SortEmployees}
         />
       </div>
     );

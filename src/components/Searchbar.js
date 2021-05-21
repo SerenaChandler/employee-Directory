@@ -3,10 +3,10 @@ import Form from 'react-bootstrap/Form'
 
 function Searchbar(props) {
   return( 
-    <Form>
+    <Form  onSubmit={props.handleFormSubmit}>
  
    
-    <Form.Control value={props.employeeName} name="employeeName"  onChange={props.handleInputChange} type="text" placeholder="Employee name" />
+    <Form.Control value={props.employeeName} name="employeeName"  onChange={props.handleInputChange} type="text" placeholder="Enter employee name" />
     
    
   </Form>
