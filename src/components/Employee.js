@@ -8,10 +8,10 @@ function Employee(props) {
     <tr>
     
       <th>Image</th>
-      <th> Name</th>
+      <th onClick={props.sortEmployees} > Name</th>
       <th> Email</th>
       <th> Phone</th>
-      <th> DOB</th>
+      <th> Age</th>
       
     </tr>
   </thead>
@@ -19,7 +19,7 @@ function Employee(props) {
 
      {props.results.map(result => (
          <tr>
-         <td><img alt="employee headshot" src={result.picture.thumbnail}/></td>
+         <td><img alt="employee headshot" src={result.picture.large}/></td>
          <td>{result.name.first} {result.name.last} </td>
          <td>{result.email}</td>
          <td>{result.cell}</td>

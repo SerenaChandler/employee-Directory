@@ -39,6 +39,12 @@ class App extends Component {
 
   };
 
+
+  SortEmployees = () => {
+    this.state.results.sort((a, b) => (a.name > b.name) ? 1 : -1)
+    console.log(this.state.results)
+  }
+
   filterEmployees = (input) => {
     if (input) {
       this.setState({
@@ -48,8 +54,8 @@ class App extends Component {
               .toLowerCase()
               .concat(" ", employee.name.last.toLowerCase())
               .includes(input) ||
-            employee.phone.includes(input) ||
-            employee.phone.replace(/[^\w\s]/gi, "").includes(input) ||
+            employee.cell.includes(input) ||
+          
             employee.email.includes(input) ||
             employee.dob.date.includes(input)
           );
@@ -71,6 +77,7 @@ class App extends Component {
         />
         <Employee 
         results = {this.state.results}
+        SortEmployees = {this.SortEmployees}
         />
       </div>
     );
