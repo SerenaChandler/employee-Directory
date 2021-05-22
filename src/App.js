@@ -36,7 +36,7 @@ function App() {
   const sortEmployees = () => {
     const newResults = [...results];
     const sortedEmployees = newResults.sort((a, b) =>
-      a.name.last > b.name.last ? 1 : -1
+      a.name.first > b.name.first ? 1 : -1
     );
     setResults(sortedEmployees);
   };
