@@ -1,37 +1,21 @@
 import React from "react";
-import Table from 'react-bootstrap/Table'
+
 
 function Employee(props) {
   return( 
-<Table striped bordered hover>
-  <thead>
-    <tr>
-    
-      <th>Image</th>
-      <th onClick={props.sortEmployees} > Name</th>
-      <th> Email</th>
-      <th> Phone</th>
-      <th> Age</th>
-      
-    </tr>
-  </thead>
-  <tbody>
 
-     {props.results.map(result => (
+
+   
          <tr>
-         <td><img alt="employee headshot" src={result.picture.large}/></td>
-         <td>{result.name.first} {result.name.last} </td>
-         <td>{result.email}</td>
-         <td>{result.cell}</td>
-         <td>{result.dob.date}</td>
+         <td><img alt="employee headshot" src={props.picture}/></td>
+         <td>{props.name} </td>
+         <td>{props.email}</td>
+         <td>{props.phone}</td>
+         <td>{props.age}</td>
        </tr>
-      ))}
+      
   
-
-  </tbody>
-</Table>
-
-  )
+  ) 
 }
 
 export default Employee

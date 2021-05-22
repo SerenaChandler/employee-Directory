@@ -1,93 +1,70 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from "./components/Searchbar";
 import Employee from "./components/Employee";
+import EmployeeHeader from "./components/tableHeader";
 import API from "./utils/API";
-import "./App.css";
+import Table from 'react-bootstrap/Table'
 
-class App extends Component {
-  state = {
-    employeeName: "",
-    results: [],
-    filteredResults: [],
-    sortToggle: true,
-    sorted: {
-      name: true,
-    },
-    search: {
-      name: "",
-    },
-  };
+function App() {
+  const [employeeName, setEmployeeName] = useState("");
+  const [ogResults, setOgResults] = useState([]);
+  const [results, setResults] = useState([])
 
-  componentDidMount() {
-    this.showEmployee();
-  }
-
-  showEmployee = () => {
+  useEffect(() => {
     API.getRandomPerson()
       .then((res) => {
         console.log(res);
-        this.setState({
-          results: res.data.results,
-          filteredResults: res.data.results,
-        });
+        setOgResults(res.data.results);
+        setResults(res.data.results);
       })
       .catch((err) => console.log(err));
-  };
+  }, []);
 
-  handleInputChange = (event) => {
-    const { name, value } = event.target;
-    console.log(value);
-    this.setState({
-      [name]: value,
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    const filteredEmployees = ogResults.filter((employee) => {
+      return employee.name.first
+        .toLowerCase()
+        .concat(" ", employee.name.last.toLowerCase())
+        .includes(value);
     });
-    this.filterEmployees(value.toLowerCase().trim());
+    console.log(value);
+    setResults(filteredEmployees);
+    setEmployeeName(value);
   };
 
-  handleFormSubmit = (event) => {
-    event.preventDefault();
-  };
-
-  SortEmployees = () => {
-    this.state.results.sort((a, b) => (a.name.last > b.name.last ? 1 : -1));
-    console.log(this.state.results);
-  };
-
-  filterEmployees = (input) => {
-    if (input) {
-      this.setState({
-        filteredResults: this.state.results.filter((employee) => {
-          return (
-            employee.name.first
-              .toLowerCase()
-              .concat(" ", employee.name.last.toLowerCase())
-              .includes(input) ||
-            employee.cell.includes(input) ||
-            employee.email.includes(input) ||
-            employee.dob.date.includes(input)
-          );
-        }),
-      });
-    } else {
-      this.setState({ filteredResults: this.state.employees });
-    }
-  };
-
-  render() {
-    return (
-      <div className="App">
-        <Searchbar
-          employeeName={this.state.employeeName}
-          handleInputChange={this.handleInputChange}
-          handleFormSubmit={this.handleFormSubmit}
-        />
-        <Employee
-          filteredResults={this.state.filteredResults}
-          results={this.state.results}
-          SortEmployees={this.SortEmployees}
-        />
-      </div>
+  const sortEmployees = () => {
+    const newResults = [...results];
+    const sortedEmployees = newResults.sort((a, b) =>
+      a.name.last > b.name.last ? 1 : -1
     );
-  }
+    setResults(sortedEmployees);
+  };
+
+  return (
+    <div className="App">
+      <Searchbar
+        handleInputChange={handleInputChange}
+        employeeName={employeeName}
+      />
+      <Table striped bordered hover>
+      <EmployeeHeader sortEmployees={sortEmployees} />
+      
+      <tbody>
+      {results.map((user) => (
+        <Employee
+          picture={user.picture.large}
+          name={user.name.first + " " + user.name.last}
+          age={user.dob.age}
+          email={user.email}
+          phone={user.phone}
+        />
+      ))}
+  </tbody>
+
+</Table>
+    </div>
+  );
 }
 
 export default App;
